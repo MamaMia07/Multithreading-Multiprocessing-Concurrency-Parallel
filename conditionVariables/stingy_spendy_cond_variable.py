@@ -18,7 +18,7 @@ class StingySpendy:
         print("Stingy done")
 
     def spendy(self):
-        for i in range(100000):
+        for i in range(50000):
             self.cond_var.acquire()
             while self.money < 20:
                 self.cond_var.wait() # wait if there isn't enough money on the bank account.
