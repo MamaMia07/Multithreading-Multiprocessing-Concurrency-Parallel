@@ -7,32 +7,28 @@ from wait_group import WaitGroup
 mutex = Lock()
 matches = []
 
-def file_search(root, filename):
+def file_search(root, filename, wait_group):
     print("Searching in: ", root)
-    child_threads = []
     for file in os.listdir(root):
         full_path = join(root, file)
         if filename in file:
-            mutex.acquire() #before global variable, alll threads modify matches[]
+            mutex.acquire() #before global variable, all threads modify matches[]
             matches.append(full_path)
             mutex.release()
 
         if isdir(full_path):
-            t = Thread(target=file_search, args=([full_path, filename]))
+            wait_group.add(1)
+            t = Thread(target=file_search, args=([full_path, filename,wait_group]))
             t.start()
-            # here without t.join() because we do not want to wait for wait for each directory  to complete
-                # its search before we search through another one, meaning that our search would not really be parallel.
-            child_threads.append(t) #put all threads on the list and then ...
-    for t in child_threads: # ... wait for all threads to complete
-            t.join()
+    wait_group.done()
 
 
 def main():
     wait_group = WaitGroup()
-    wait_group.add(1)
-    t = Thread(target = file_search, args=(["C:/Users/UPWr/MAGDA/IGiG", "fdgggr.txt"]))
+    wait_group.add(1) #adding first thread 9created below)
+    t = Thread(target = file_search, args=(["C:/Users/UPWr/MAGDA/IGiG", "fdgggr.txt", wait_group]))
     t.start()
-    t.join()
+    wait_group.wait() #main thread will be waiting on this function and it's only once this function returns that we are sure that this search operation has finished.
     for m in matches:
         print("Matched: ", m)
 

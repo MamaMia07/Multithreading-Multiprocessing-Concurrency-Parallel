@@ -15,8 +15,8 @@ class WaitGroup():
     # done operation  signals that a threat is done from its work.
     def done(self):
         self.cv.acquire()
-        if self.wait_count >0:
-            self.wait_count -=1
+        if self.wait_count > 0:
+            self.wait_count -= 1
         if self.wait_count == 0: #if there is no working thread
             self.cv.notify_all() # notify all, notifies all the threads that are currently waiting on that condition variable
         self.cv.release()
@@ -27,6 +27,6 @@ class WaitGroup():
         self.cv.acquire()
         # in while loop because we need to check again every time we are awaken from the condition variable.
         #in case that just before our tread is woken up, another thread comes in and adds more work to the wait group.
-        while self.wait() > 0: # we need to wait for more threads to finish what they're doing, we need to do a conditional variable that wait.
-            self.cv.wait()
+        while self.wait_count > 0: # we need to wait for more threads to finish what they're doing, we need to do a conditional variable that wait.
+            self.cv.wait() #blocks the execution of the current thread and releases the associated lock
         self.cv.release()
