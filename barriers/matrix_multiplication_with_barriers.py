@@ -45,3 +45,7 @@ for t in range(10):
 
 end = time.time()
 print("Done, time taken: ", end - start)
+
+'''t's not a huge improvement over what we have.
+This is due to the python's global interpreter.
+It doesn't let more than one tried to execute concurrently.'''
