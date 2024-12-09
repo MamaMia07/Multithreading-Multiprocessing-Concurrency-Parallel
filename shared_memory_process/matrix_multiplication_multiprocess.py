@@ -36,11 +36,15 @@ if __name__ == '__main__':
     multiprocessing.set_start_method('spawn')
     work_start = Barrier(process_count + 1)
     work_complete = Barrier(process_count + 1)
-
+'''
+#Processes have their own memory space. 
+Unlike threads you cannot just create a variable in memory and have all the processes communicate 
+via that variable.'''
+    #multiprocessing.Array - a process shared array, is a chunk of memory that is shared between two or more processes.
     matrix_A = multiprocessing.Array('i', [0]* (matrix_size * matrix_size), lock=False)
     matrix_B = multiprocessing.Array('i', [0] * (matrix_size * matrix_size), lock=False)
     result = multiprocessing.Array('i', [0] * (matrix_size * matrix_size), lock=False)
-
+    # lock = False because each process is writing in a separate part of the array.
     for p in range(process_count):
         Process(target = work_out_row, args = (p, matrix_A, matrix_B, result, work_start, work_complete)).start()
 
