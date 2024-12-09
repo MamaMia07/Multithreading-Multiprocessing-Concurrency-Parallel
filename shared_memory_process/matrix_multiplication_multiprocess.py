@@ -4,7 +4,7 @@ from random import Random
 from multiprocessing import Barrier, Process
 
 process_count = 8 #(for 8 processors)
-matrix_size = 200
+matrix_size = 5
 random = Random()
 
 '''The problem  deals with how process memory sharing works in Python.
@@ -52,7 +52,11 @@ if __name__ == '__main__':
             result[i] = 0
         work_start.wait()
         work_complete.wait()
-
+        for r in range(matrix_size):
+            for c in range(matrix_size):
+                print(result[r * matrix_size + c], " ", end='')
+            print('')
+        print('')
     end = time.time()
     print("Done, time taken: ", end - start)
 
