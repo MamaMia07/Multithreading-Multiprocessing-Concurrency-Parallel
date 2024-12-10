@@ -12,7 +12,7 @@ def pong(pipe_conn):
     while True:
         ping = pipe_conn.recv()
         print(ping)
-        time.sleep(1)
+        time.sleep(2)
         pipe_conn.send(["pong", time.time()])
 
 if __name__ == '__main__':
