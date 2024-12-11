@@ -37,7 +37,7 @@ def extract_wind_direction(metars):
                     winds.append(re.match(WIND_EX_REGEX, token).group(1))
     return winds
 
-def mine_wind_distribution(wind, wind_dist):
+def mine_wind_distribution(winds, wind_dist):
     for wind in winds:
         if re.search(VARIABLE_WIND_REGEX, wind):
             for i in range(8):
