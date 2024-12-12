@@ -1,6 +1,7 @@
 from threading import Thread, Lock
 
-from train import *
+#
+from hierarchy.train import *
 from draw_trains import *
 from model import *
 
